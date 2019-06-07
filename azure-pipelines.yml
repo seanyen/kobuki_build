@@ -33,4 +33,4 @@ jobs:
       pushd "%Build_StagingDirectory%\catkin_ws"
       set "CMAKE_PREFIX_PATH=%CMAKE_PREFIX_PATH%;%Build_StagingDirectory%\catkin_ws\vcpkg\installed\x64-windows"
       set
-      catkin_make_isolated --only-pkg-with-deps kobuki--install -DPYTHON_EXECUTABLE=c:/opt/python27amd64/python.exe
+      catkin_make_isolated --only-pkg-with-deps kobuki --install -DPYTHON_EXECUTABLE=c:/opt/python27amd64/python.exe
