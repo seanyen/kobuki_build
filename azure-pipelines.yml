@@ -13,10 +13,9 @@ jobs:
   - script: |
       call "C:\opt\ros\melodic\x64\setup.bat"
       md "%Build_StagingDirectory%\catkin_ws\src"
-      pushd "%Build_StagingDirectory%\catkin_ws"
-      wstool init src
-      wstool merge -t src kobuki.rosinstall
-      wstool update -t src
+      wstool init "%Build_StagingDirectory%\catkin_ws\src"
+      wstool merge -t "%Build_StagingDirectory%\catkin_ws\src" kobuki.rosinstall
+      wstool update -t "%Build_StagingDirectory%\catkin_ws\src"
   - script: |
       pushd "%Build_StagingDirectory%\catkin_ws"
       git clone https://github.com/seanyen/vcpkg -b vcpkg_ros
@@ -24,8 +23,8 @@ jobs:
       call "bootstrap-vcpkg.bat"
   - script: |
       call "C:\opt\ros\melodic\x64\setup.bat"
-      pushd "%Build_StagingDirectory%\catkin_ws\vcpkg"
       copy 10-vcpkg.list C:\opt\ros\melodic\x64\etc\ros\rosdep\sources.list.d
+      pushd "%Build_StagingDirectory%\catkin_ws\vcpkg"
       rosdep update
       rosdep install --from-paths "%Build_StagingDirectory%\catkin_ws" --ignore-src -r -y
   - script: |
