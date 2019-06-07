@@ -3,3 +3,9 @@
 - git: {local-name: ecl_core,       version: windows_bringup,         uri: 'https://github.com/kejxu/ecl_core.git'}
 - git: {local-name: sophus,         version: release/1.0.1-melodic,        uri: 'https://github.com/kejxu/sophus.git'}
 - git: {local-name: kobuki_core,    version: windows_bringup,         uri: 'https://github.com/kejxu/kobuki_core.git'}
+- git: {local-name: yocs_msgs, version: release/0.7-melodic, uri: 'https://github.com/kejxu/yocs_msgs.git'}
+- git: {local-name: yujin_ocs, windows_bringup: indigo, uri: 'https://github.com/kejxu/yujin_ocs.git'}
+- git: {local-name: windows_bringup, version: indigo, uri: 'https://github.com/kejxu/kobuki_msgs.git'}
+- git: {local-name: kobuki, version: windows_bringup, uri: 'https://github.com/kejxu/kobuki.git'}
+- git: {local-name: capabilities, version: master, uri: 'https://github.com/kejxu/capabilities.git'}
+- git: {local-name: std_capabilities, version: master, uri: 'https://github.com/kejxu/std_capabilities.git'}
