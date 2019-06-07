@@ -1,0 +1,34 @@
+jobs:
+- job: Build
+  pool:
+    vmImage: 'vs2017-win2016'
+  timeoutInMinutes: 240
+  steps:
+  - script: |
+      choco sources add -n=roswin -s https://roswin.azurewebsites.net/api/v2/ --priority 1
+      choco upgrade ros-melodic-ros_core -y
+  - script: |
+      call "C:\opt\ros\melodic\x64\setup.bat"
+      pip install -U --no-deps --force-reinstall -r requirements.txt
+  - script: |
+      call "C:\opt\ros\melodic\x64\setup.bat"
+      md "%Build_StagingDirectory%\catkin_ws\src"
+      pushd "%Build_StagingDirectory%\catkin_ws"
+      wstool init src
+      wstool merge -t src kobuki.rosinstall
+      wstool update -t src
+  - script: |
+      pushd "%Build_StagingDirectory%\catkin_ws"
+      git clone https://github.com/seanyen/vcpkg -b vcpkg_ros
+      pushd vcpkg
+      call "bootstrap-vcpkg.bat"
+  - script: |
+      call "C:\opt\ros\melodic\x64\setup.bat"
+      pushd "%Build_StagingDirectory%\catkin_ws\vcpkg"
+      copy 10-vcpkg.list C:\opt\ros\melodic\x64\etc\ros\rosdep\sources.list.d
+      rosdep update
+      rosdep install --from-paths "%Build_StagingDirectory%\catkin_ws" --ignore-src -r -y
+  - script: |
+      call "C:\opt\ros\melodic\x64\setup.bat"
+      set "CMAKE_PREFIX_PATH=%CMAKE_PREFIX_PATH%;%Build_StagingDirectory%\catkin_ws\vcpkg\installed\x64-windows"
+      catkin_make_isolated --pkg-only-with-deps kobuki_core --install
