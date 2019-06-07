@@ -32,5 +32,6 @@ jobs:
       call "C:\opt\ros\melodic\x64\setup.bat"
       pushd "%Build_StagingDirectory%\catkin_ws"
       set "CMAKE_PREFIX_PATH=%CMAKE_PREFIX_PATH%;%Build_StagingDirectory%\catkin_ws\vcpkg\installed\x64-windows"
+      set PYTHON_HOME=C:\opt\python27amd64
       set
       catkin_make_isolated --only-pkg-with-deps kobuki_core --install
