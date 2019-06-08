@@ -9,12 +9,6 @@ jobs:
       choco upgrade ros-melodic-desktop_full -y
     displayName: 'Install ROS (melodic.desktop_full)'
   - script: |
-      pushd "%Build_StagingDirectory%\catkin_ws"
-      git clone https://github.com/seanyen/vcpkg -b vcpkg_ros
-      pushd vcpkg
-      call "bootstrap-vcpkg.bat"
-    displayName: 'Setup vcpkg (kobuki-dev)'
-  - script: |
       call "C:\opt\ros\melodic\x64\setup.bat"
       pip install -U --no-deps --force-reinstall -r requirements.txt
     displayName: 'Install rosdep (vcpkg-dev)'
@@ -25,6 +19,12 @@ jobs:
       wstool merge -t "%Build_StagingDirectory%\catkin_ws\src" kobuki.rosinstall
       wstool update -t "%Build_StagingDirectory%\catkin_ws\src"
     displayName: 'Initialize kobuki workspace'
+  - script: |
+      pushd "%Build_StagingDirectory%\catkin_ws"
+      git clone https://github.com/seanyen/vcpkg -b vcpkg_ros
+      pushd vcpkg
+      call "bootstrap-vcpkg.bat"
+    displayName: 'Setup vcpkg (kobuki-dev)'
   - script: |
       call "C:\opt\ros\melodic\x64\setup.bat"
       copy 10-vcpkg.list C:\opt\ros\melodic\x64\etc\ros\rosdep\sources.list.d
