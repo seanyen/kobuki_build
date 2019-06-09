@@ -7,26 +7,31 @@ jobs:
   - script: |
       choco sources add -n=roswin -s https://roswin.azurewebsites.net/api/v2/ --priority 1
       choco upgrade ros-melodic-desktop_full -y
+    displayName: 'Install ROS (melodic.desktop_full)'
   - script: |
       call "C:\opt\ros\melodic\x64\setup.bat"
       pip install -U --no-deps --force-reinstall -r requirements.txt
+    displayName: 'Install rosdep (vcpkg-dev)'
   - script: |
       call "C:\opt\ros\melodic\x64\setup.bat"
       md "%Build_StagingDirectory%\catkin_ws\src"
       wstool init "%Build_StagingDirectory%\catkin_ws\src"
       wstool merge -t "%Build_StagingDirectory%\catkin_ws\src" kobuki.rosinstall
       wstool update -t "%Build_StagingDirectory%\catkin_ws\src"
+    displayName: 'Initialize kobuki workspace'
   - script: |
       pushd "%Build_StagingDirectory%\catkin_ws"
       git clone https://github.com/seanyen/vcpkg -b vcpkg_ros
       pushd vcpkg
       call "bootstrap-vcpkg.bat"
+    displayName: 'Setup vcpkg (kobuki-dev)'
   - script: |
       call "C:\opt\ros\melodic\x64\setup.bat"
       copy 10-vcpkg.list C:\opt\ros\melodic\x64\etc\ros\rosdep\sources.list.d
       pushd "%Build_StagingDirectory%\catkin_ws\vcpkg"
       rosdep update
       rosdep install --from-paths "%Build_StagingDirectory%\catkin_ws" --ignore-src -r -y
+    displayName: 'Install dependency with rosdep'
   - script: |
       call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
       call "C:\opt\ros\melodic\x64\setup.bat"
@@ -34,3 +39,4 @@ jobs:
       set "CMAKE_PREFIX_PATH=%CMAKE_PREFIX_PATH%;%Build_StagingDirectory%\catkin_ws\vcpkg\installed\x64-windows"
       set
       catkin_make_isolated --only-pkg-with-deps kobuki --install -DPYTHON_EXECUTABLE=c:/opt/python27amd64/python.exe
+    displayName: 'Build kobuki workspace'
