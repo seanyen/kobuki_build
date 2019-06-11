@@ -1,2 +1,0 @@
-# os-specific listings first
-yaml https://raw.githubusercontent.com/ms-iot/rosdistro-db/init_windows_vcpkg/rosdep/vcpkg.yaml windows
